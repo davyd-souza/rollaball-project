@@ -10,10 +10,13 @@ public class PlayerController : MonoBehaviour
     // Declaring variables
     public float speed = 0;
     public TextMeshProUGUI countText;
+    public TextMeshProUGUI remainingText;
     public GameObject winTextObject;
 
     private Rigidbody rb;
     private int count;
+    private int remaining;
+    private int total;
     private float movementX;
     private float movementY;
 
@@ -22,8 +25,9 @@ public class PlayerController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         count = 0;
+        remaining = total = GameObject.FindGameObjectsWithTag("PickUp").Length;
 
-        SetCountText();
+        SetText();
         winTextObject.SetActive(false);
     }
 
@@ -35,10 +39,11 @@ public class PlayerController : MonoBehaviour
         movementY = movementVector.y;
     }
 
-    void SetCountText()
+    void SetText()
     {
         countText.text = "Count: " + count.ToString();
-        if(count >= 12)
+        remainingText.text = "Remaining: " + remaining.ToString();
+        if(count >= total)
         {
             winTextObject.SetActive(true);
         }
@@ -56,7 +61,8 @@ public class PlayerController : MonoBehaviour
         {
             other.gameObject.SetActive(false);
             count++;
-            SetCountText();
+            remaining--;
+            SetText();
         }
     }
 }
